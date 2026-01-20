@@ -147,7 +147,7 @@ pub fn transform(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
                 TextProcOutput::Fragment(fr) => output.push_str(&fr),
                 TextProcOutput::Empty => {}
             }
-            output.push_str("\n");
+            output.push('\n');
         }
         text_proc.finalize()?;
 

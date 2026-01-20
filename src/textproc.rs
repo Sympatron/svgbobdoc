@@ -50,12 +50,13 @@ impl TextProcState {
 
         // If `new_frag` is `None`, then this flag indicates whether the input
         // fragment is outputed as-is.
-        let mut passthrough = match self.code_block {
+        let mut passthrough = !matches!(
+            self.code_block,
             Some(CodeBlock {
-                captured: Some(_), ..
-            }) => false,
-            _ => true,
-        };
+                captured: Some(_),
+                ..
+            })
+        );
 
         // Disables "pass-through" mode, preparing `new_frag` for custom
         // generation.
@@ -99,8 +100,8 @@ impl TextProcState {
         }
 
         fn remove_indent<'a>(mut line: &'a str, mut indent: &str) -> &'a str {
-            while line.len() > 0
-                && indent.len() > 0
+            while !line.is_empty()
+                && !indent.is_empty()
                 && line.as_bytes()[0] == indent.as_bytes()[0]
                 && (indent.as_bytes()[0] == b' ' || indent.as_bytes()[0] == b'\t')
             {
